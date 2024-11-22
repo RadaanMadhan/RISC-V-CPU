@@ -4,7 +4,7 @@ module pc_plus #(
     input [ADDRESS_WIDTH-1:0]   offset, 
     input [ADDRESS_WIDTH-1:0]   pc,
     output [ADDRESS_WIDTH-1:0]  pc_next
-)
+);
 
 always_comb
     pc_next = pc + offset;
