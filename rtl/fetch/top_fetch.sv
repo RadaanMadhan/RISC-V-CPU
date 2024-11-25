@@ -1,3 +1,5 @@
+`include <./fetch/pc_reg.sv>
+
 module top_fetch #(
     parameter   ADDRESS_WIDTH = 32
 )(

@@ -47,7 +47,7 @@ VM_USER_CLASSES = \
 
 # User .cpp directories (from .cpp's on Verilator command line)
 VM_USER_DIR = \
-	/root/Documents/iac/lab0-devtools/autumn/workspace/cpu/tb/tests \
+	/root/Documents/iac/lab0-devtools/autumn/workspace/RISC-V-CPU/tb/tests \
 
 
 ### Default rules...
@@ -59,7 +59,7 @@ include $(VERILATOR_ROOT)/include/verilated.mk
 ### Executable rules... (from --exe)
 VPATH += $(VM_USER_DIR)
 
-verify.o: /root/Documents/iac/lab0-devtools/autumn/workspace/cpu/tb/tests/verify.cpp
+verify.o: /root/Documents/iac/lab0-devtools/autumn/workspace/RISC-V-CPU/tb/tests/verify.cpp
 	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST) -c -o $@ $<
 
 ### Link rules... (from --exe)

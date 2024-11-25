@@ -1,3 +1,10 @@
+`include <mux.sv>
+`include <./fetch/top_fetch.sv>
+`include <./decode/top_decode.sv>
+`include <./execute/top_execute.sv>
+`include <./memory/top_memory.sv>
+`include <./memory/inst_mem.sv>
+
 module top #(
     parameter   DATA_WIDTH = 32
 ) (

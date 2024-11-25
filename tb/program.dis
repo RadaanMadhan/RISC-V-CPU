@@ -12,7 +12,7 @@ bfc00000:	0ff00313          	li	t1,255
 bfc00004:	00000513          	li	a0,0
 
 bfc00008 <mloop>:
-bfc00008:	0005a503          	lw	a0,0(a1)
+bfc00008:	00000593          	li	a1,0
 
 bfc0000c <iloop>:
 bfc0000c:	00058513          	mv	a0,a1

@@ -21,7 +21,7 @@ class Vdut___024root final : public VerilatedModule {
     CData/*0:0*/ top__DOT__ALUSrc;
     CData/*0:0*/ top__DOT__MemWrite;
     CData/*0:0*/ top__DOT__ResultSrc;
-    CData/*1:0*/ top__DOT__decode__DOT__ImmSrc;
+    CData/*2:0*/ top__DOT__decode__DOT__ImmSrc;
     CData/*0:0*/ top__DOT__decode__DOT__control_unit__DOT__branch;
     CData/*1:0*/ top__DOT__decode__DOT__control_unit__DOT__ALUOp;
     CData/*0:0*/ __Vclklast__TOP__clk;
@@ -36,7 +36,7 @@ class Vdut___024root final : public VerilatedModule {
     IData/*31:0*/ top__DOT__execute__DOT__ALUop2;
     VlUnpacked<CData/*7:0*/, 4096> top__DOT__inst_mem__DOT__rom_array;
     VlUnpacked<IData/*31:0*/, 32> top__DOT__execute__DOT__reg_file__DOT__registers;
-    VlUnpacked<IData/*31:0*/, 2> top__DOT__memory__DOT__data_mem__DOT__ram_array;
+    VlUnpacked<CData/*7:0*/, 131072> top__DOT__memory__DOT__data_mem__DOT__ram_array;
     VlUnpacked<CData/*0:0*/, 2> __Vm_traceActivity;
 
     // INTERNAL VARIABLES

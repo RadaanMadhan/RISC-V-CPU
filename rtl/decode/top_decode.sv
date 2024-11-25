@@ -1,3 +1,6 @@
+`include <./decode/control_unit.sv>
+`include <./decode/sign_extend.sv>
+
 module top_decode #(
     parameter DATA_WIDTH = 32
 ) (
@@ -12,8 +15,7 @@ module top_decode #(
     output logic [DATA_WIDTH-1:0]  ImmExt
 );
 
-logic [1:0] ImmSrc;
-logic [19:15] unused_bits = instr[19:15];
+logic [2:0] ImmSrc;
 
 control_unit control_unit (
     .op         (instr[6:0]),
@@ -30,10 +32,9 @@ control_unit control_unit (
 );
 
 sign_extend sign_extend(
-    .Imm_up        (instr[31:20]),
-    .Imm_down      (instr[11:7]),
-    .ImmSrc        (ImmSrc),
-    .ImmExt        (ImmExt)     
+    .Imm        (instr[31:7]),
+    .ImmSrc     (ImmSrc),
+    .ImmExt     (ImmExt)     
 );
 
     

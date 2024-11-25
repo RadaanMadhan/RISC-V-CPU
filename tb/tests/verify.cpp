@@ -18,7 +18,7 @@ protected:
 TEST_F(CpuTestbench, BaseProgramTest)
 {
     bool success = false;
-    system("./compile.sh asm/program.S");
+    system("./compile.sh asm/program.S"); // remove to test other asm files
 
     for (int i = 0; i < CYCLES; i++)
     {

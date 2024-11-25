@@ -1,3 +1,6 @@
+`include <./execute/alu.sv>
+`include <./execute/reg_file.sv>
+
 module top_execute #(
     parameter   DATA_WIDTH = 32
 )(

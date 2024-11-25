@@ -1,3 +1,6 @@
+`include <./decode/alu_decoder.sv>
+`include <./decode/main_decoder.sv>
+
 module control_unit (
     input logic [6:0]     op,
     input logic [2:0]     funct3,
@@ -5,7 +8,7 @@ module control_unit (
     input logic           EQ, 
 
     output logic [2:0]    ALUctrl,
-    output logic [1:0]    ImmSrc, 
+    output logic [2:0]    ImmSrc, 
     output logic          RegWrite,
     output logic          ALUSrc,
     output logic          MemWrite,
