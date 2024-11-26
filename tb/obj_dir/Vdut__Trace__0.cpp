@@ -42,27 +42,7 @@ void Vdut___024root__trace_chg_sub_0(Vdut___024root* vlSelf, VerilatedVcd::Buffe
         bufp->chgIData(oldp+10,(vlSelf->top__DOT__ALUResult),32);
         bufp->chgIData(oldp+11,(vlSelf->top__DOT__WriteData),32);
         bufp->chgIData(oldp+12,(((IData)(vlSelf->top__DOT__ResultSrc)
-                                  ? ((vlSelf->top__DOT__memory__DOT__data_mem__DOT__ram_array
-                                      [(0x1ffffU & 
-                                        ((IData)(3U) 
-                                         + vlSelf->top__DOT__ALUResult))] 
-                                      << 0x18U) | (
-                                                   (vlSelf->top__DOT__memory__DOT__data_mem__DOT__ram_array
-                                                    [
-                                                    (0x1ffffU 
-                                                     & ((IData)(2U) 
-                                                        + vlSelf->top__DOT__ALUResult))] 
-                                                    << 0x10U) 
-                                                   | ((vlSelf->top__DOT__memory__DOT__data_mem__DOT__ram_array
-                                                       [
-                                                       (0x1ffffU 
-                                                        & ((IData)(1U) 
-                                                           + vlSelf->top__DOT__ALUResult))] 
-                                                       << 8U) 
-                                                      | vlSelf->top__DOT__memory__DOT__data_mem__DOT__ram_array
-                                                      [
-                                                      (0x1ffffU 
-                                                       & vlSelf->top__DOT__ALUResult)])))
+                                  ? vlSelf->top__DOT__memory__DOT__ReadData
                                   : vlSelf->top__DOT__ALUResult)),32);
         bufp->chgCData(oldp+13,(vlSelf->top__DOT__decode__DOT__ImmSrc),3);
         bufp->chgCData(oldp+14,((0x7fU & vlSelf->top__DOT__instr)),7);
@@ -128,24 +108,7 @@ void Vdut___024root__trace_chg_sub_0(Vdut___024root* vlSelf, VerilatedVcd::Buffe
         bufp->chgIData(oldp+59,(((IData)(4U) + vlSelf->top__DOT__pc)),32);
         bufp->chgIData(oldp+60,((vlSelf->top__DOT__pc 
                                  + vlSelf->top__DOT__ImmExt)),32);
-        bufp->chgIData(oldp+61,(((vlSelf->top__DOT__memory__DOT__data_mem__DOT__ram_array
-                                  [(0x1ffffU & ((IData)(3U) 
-                                                + vlSelf->top__DOT__ALUResult))] 
-                                  << 0x18U) | ((vlSelf->top__DOT__memory__DOT__data_mem__DOT__ram_array
-                                                [(0x1ffffU 
-                                                  & ((IData)(2U) 
-                                                     + vlSelf->top__DOT__ALUResult))] 
-                                                << 0x10U) 
-                                               | ((vlSelf->top__DOT__memory__DOT__data_mem__DOT__ram_array
-                                                   [
-                                                   (0x1ffffU 
-                                                    & ((IData)(1U) 
-                                                       + vlSelf->top__DOT__ALUResult))] 
-                                                   << 8U) 
-                                                  | vlSelf->top__DOT__memory__DOT__data_mem__DOT__ram_array
-                                                  [
-                                                  (0x1ffffU 
-                                                   & vlSelf->top__DOT__ALUResult)])))),32);
+        bufp->chgIData(oldp+61,(vlSelf->top__DOT__memory__DOT__ReadData),32);
     }
     bufp->chgBit(oldp+62,(vlSelf->clk));
     bufp->chgBit(oldp+63,(vlSelf->rst));

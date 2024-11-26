@@ -17,9 +17,12 @@ always_comb begin
                         if (ALUout == {DATA_WIDTH{1'b0}})    EQ = 1;
                         else EQ = 0;
                     end
-        3'b101:     ALUout = ALUop1 <  ALUop2 ? 1 : 0;
-        3'b011:     ALUout = ALUop1 | ALUop2;
-        3'b010:     ALUout = ALUop1 & ALUop2;
+        3'b010:     ALUout = ALUop1 < ALUop2 ? 1 : 0;
+        3'b100:     ALUout = ALUop1 ^ ALUop2;
+        3'b101:     ALUout = ALUop1 >> ALUop2;
+        3'b011:     ALUout = ALUop1 << ALUop2;
+        3'b110:     ALUout = ALUop1 | ALUop2;
+        3'b111:     ALUout = ALUop1 & ALUop2;
         default:    ALUout = {DATA_WIDTH{1'b0}};
     endcase
 end

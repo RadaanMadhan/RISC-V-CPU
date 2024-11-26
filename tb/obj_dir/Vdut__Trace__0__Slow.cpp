@@ -164,6 +164,7 @@ VL_ATTR_COLD void Vdut___024root__trace_init_sub__TOP__0(Vdut___024root* vlSelf,
     tracep->declBus(c+12,"WriteData", false,-1, 31,0);
     tracep->declBit(c+10,"ResultSrc", false,-1);
     tracep->declBit(c+9,"MemWrite", false,-1);
+    tracep->declBus(c+16,"funct3", false,-1, 2,0);
     tracep->declBus(c+13,"Result", false,-1, 31,0);
     tracep->declBus(c+62,"ReadData", false,-1, 31,0);
     tracep->pushNamePrefix("ResultSlc ");
@@ -180,6 +181,7 @@ VL_ATTR_COLD void Vdut___024root__trace_init_sub__TOP__0(Vdut___024root* vlSelf,
     tracep->declBit(c+9,"wr_en", false,-1);
     tracep->declBus(c+11,"addr", false,-1, 31,0);
     tracep->declBus(c+12,"WriteData", false,-1, 31,0);
+    tracep->declBus(c+16,"funct3", false,-1, 2,0);
     tracep->declBus(c+62,"ReadData", false,-1, 31,0);
     tracep->popNamePrefix(3);
 }
@@ -242,24 +244,7 @@ VL_ATTR_COLD void Vdut___024root__trace_full_sub_0(Vdut___024root* vlSelf, Veril
     bufp->fullIData(oldp+11,(vlSelf->top__DOT__ALUResult),32);
     bufp->fullIData(oldp+12,(vlSelf->top__DOT__WriteData),32);
     bufp->fullIData(oldp+13,(((IData)(vlSelf->top__DOT__ResultSrc)
-                               ? ((vlSelf->top__DOT__memory__DOT__data_mem__DOT__ram_array
-                                   [(0x1ffffU & ((IData)(3U) 
-                                                 + vlSelf->top__DOT__ALUResult))] 
-                                   << 0x18U) | ((vlSelf->top__DOT__memory__DOT__data_mem__DOT__ram_array
-                                                 [(0x1ffffU 
-                                                   & ((IData)(2U) 
-                                                      + vlSelf->top__DOT__ALUResult))] 
-                                                 << 0x10U) 
-                                                | ((vlSelf->top__DOT__memory__DOT__data_mem__DOT__ram_array
-                                                    [
-                                                    (0x1ffffU 
-                                                     & ((IData)(1U) 
-                                                        + vlSelf->top__DOT__ALUResult))] 
-                                                    << 8U) 
-                                                   | vlSelf->top__DOT__memory__DOT__data_mem__DOT__ram_array
-                                                   [
-                                                   (0x1ffffU 
-                                                    & vlSelf->top__DOT__ALUResult)])))
+                               ? vlSelf->top__DOT__memory__DOT__ReadData
                                : vlSelf->top__DOT__ALUResult)),32);
     bufp->fullCData(oldp+14,(vlSelf->top__DOT__decode__DOT__ImmSrc),3);
     bufp->fullCData(oldp+15,((0x7fU & vlSelf->top__DOT__instr)),7);
@@ -325,22 +310,7 @@ VL_ATTR_COLD void Vdut___024root__trace_full_sub_0(Vdut___024root* vlSelf, Veril
     bufp->fullIData(oldp+60,(((IData)(4U) + vlSelf->top__DOT__pc)),32);
     bufp->fullIData(oldp+61,((vlSelf->top__DOT__pc 
                               + vlSelf->top__DOT__ImmExt)),32);
-    bufp->fullIData(oldp+62,(((vlSelf->top__DOT__memory__DOT__data_mem__DOT__ram_array
-                               [(0x1ffffU & ((IData)(3U) 
-                                             + vlSelf->top__DOT__ALUResult))] 
-                               << 0x18U) | ((vlSelf->top__DOT__memory__DOT__data_mem__DOT__ram_array
-                                             [(0x1ffffU 
-                                               & ((IData)(2U) 
-                                                  + vlSelf->top__DOT__ALUResult))] 
-                                             << 0x10U) 
-                                            | ((vlSelf->top__DOT__memory__DOT__data_mem__DOT__ram_array
-                                                [(0x1ffffU 
-                                                  & ((IData)(1U) 
-                                                     + vlSelf->top__DOT__ALUResult))] 
-                                                << 8U) 
-                                               | vlSelf->top__DOT__memory__DOT__data_mem__DOT__ram_array
-                                               [(0x1ffffU 
-                                                 & vlSelf->top__DOT__ALUResult)])))),32);
+    bufp->fullIData(oldp+62,(vlSelf->top__DOT__memory__DOT__ReadData),32);
     bufp->fullBit(oldp+63,(vlSelf->clk));
     bufp->fullBit(oldp+64,(vlSelf->rst));
     bufp->fullIData(oldp+65,(vlSelf->a0),32);

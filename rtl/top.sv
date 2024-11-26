@@ -12,7 +12,7 @@ module top #(
     input   logic rst,
     output  logic [DATA_WIDTH-1:0] a0    
 );
-    
+
 
     logic [DATA_WIDTH-1:0]      pc;
     logic [DATA_WIDTH-1:0]      ImmExt;
@@ -75,7 +75,8 @@ module top #(
         .WriteData  (WriteData),
         .ResultSrc  (ResultSrc),
         .MemWrite   (MemWrite),
-        .Result     (Result)
+        .Result     (Result),
+        .funct3     (instr[14:12])
     );
 
     //assign a0 = 32'd5;

@@ -34,6 +34,7 @@ class Vdut___024root final : public VerilatedModule {
     IData/*31:0*/ top__DOT__fetch__DOT__pc_next;
     IData/*31:0*/ top__DOT__execute__DOT__RD1;
     IData/*31:0*/ top__DOT__execute__DOT__ALUop2;
+    IData/*31:0*/ top__DOT__memory__DOT__ReadData;
     VlUnpacked<CData/*7:0*/, 4096> top__DOT__inst_mem__DOT__rom_array;
     VlUnpacked<IData/*31:0*/, 32> top__DOT__execute__DOT__reg_file__DOT__registers;
     VlUnpacked<CData/*7:0*/, 131072> top__DOT__memory__DOT__data_mem__DOT__ram_array;

@@ -16,7 +16,7 @@ module sign_extend #(
         // U-type
         3'b100: ImmExt = {Imm[31:12],12'b0};
         // J-type
-        3'b101: ImmExt = {{13{Imm[31]}},Imm[19:12],Imm[20],Imm[30:21],1'b0};
+        3'b101: ImmExt = {{12{Imm[31]}},Imm[19:12],Imm[20],Imm[30:21],1'b0};
         // R-type  
         default: ImmExt = 32'b0; 
     endcase
