@@ -20,7 +20,7 @@ initial begin
         $readmemh("data.hex", ram_array, 32'h10000);  // Load into data mem
         $display("Finished Loading data memory");
 end;
-*/
+
 
 
 always_ff @(posedge clk)
