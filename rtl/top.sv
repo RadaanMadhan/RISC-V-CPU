@@ -91,6 +91,8 @@ module top #(
         .MemWrite   (MemWrite),
         .Result     (Result),
         .funct3     (instr[14:12])
+        .Result     (Result),
+        .funct3     (instr[14:12])
     );
 
     //assign a0 = 32'd5;

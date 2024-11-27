@@ -69,6 +69,7 @@ case (op)
     end
     //U-Type
     //Load Upper Imm 
+    //Load Upper Imm 
     7'b0110111: begin
         RegWrite    = 1'b1;
         ImmSrc      = 3'b100;
@@ -80,6 +81,7 @@ case (op)
         ALUOp       = 2'b00;
         PcOp        = 1'b0;
     end
+    //Add Upper Imm to PC TODO
     //Add Upper Imm to PC TODO
     7'b0010111: begin
         RegWrite    = 1'b1;
@@ -116,6 +118,7 @@ case (op)
     end
     default: begin
         RegWrite    = 1'b0;
+        ImmSrc      = 3'b000;
         ImmSrc      = 3'b000;
         ALUSrc      = 1'b0;
         MemWrite    = 1'b0;

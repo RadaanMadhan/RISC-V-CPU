@@ -20,11 +20,32 @@ initial begin
         $readmemh("data.hex", ram_array, 32'h10000);  // Load into data mem
         $display("Finished Loading data memory");
 end;
-
+*/
 
 
 always_ff @(posedge clk)
     if (wr_en) begin 
+        case (funct3)
+            3'b000: begin
+                ram_array[addr]     <= WriteData [7:0];
+            end
+            3'b001: begin
+                ram_array[addr + 1] <= WriteData [7:0];
+                ram_array[addr]     <= WriteData [15:8];
+            end
+            3'b010: begin
+                ram_array[addr + 3] <= WriteData [7:0];
+                ram_array[addr + 2] <= WriteData [15:8];
+                ram_array[addr + 1] <= WriteData [23:16];
+                ram_array[addr]     <= WriteData [31:24];
+            end
+            default:begin
+                ram_array[addr + 3] <= WriteData [7:0];
+                ram_array[addr + 2] <= WriteData [15:8];
+                ram_array[addr + 1] <= WriteData [23:16];
+                ram_array[addr]     <= WriteData [31:24];
+            end
+        endcase
         case (funct3)
             3'b000: begin
                 ram_array[addr]     <= WriteData [7:0];
