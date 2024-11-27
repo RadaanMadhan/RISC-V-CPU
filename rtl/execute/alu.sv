@@ -5,24 +5,56 @@ module alu#(
     input  logic [DATA_WIDTH-1:0]   ALUop2,
     input  logic [2:0]              ALUctrl,
     output logic [DATA_WIDTH-1:0]   ALUout,
-    output logic                    EQ
+    output logic                    branch_l
 );
 
+
 always_comb begin
-    EQ = 0;
     case(ALUctrl)
-        3'b000:     ALUout = ALUop1 + ALUop2; 
-        3'b001:     begin
-                        ALUout = ALUop1 - ALUop2;
-                        if (ALUout == {DATA_WIDTH{1'b0}})    EQ = 1;
-                        else EQ = 0;
+        //ADD
+        3'b000:     begin 
+                    ALUout = ALUop1 + ALUop2; 
+                    branch_l = 0;
+                    end 
+        // SUB
+        3'b001:     begin 
+                    ALUout = ALUop1 - ALUop2; 
+                    branch_l = (ALUout == 32'b0)? 1:0;
                     end
-        3'b101:     ALUout = ALUop1 <  ALUop2 ? 1 : 0;
-        3'b011:     ALUout = ALUop1 | ALUop2;
-        3'b010:     ALUout = ALUop1 & ALUop2;
+        // Less Than 
+        3'b010:     begin
+                    ALUout = ALUop1 < ALUop2 ? 1 : 0;
+                    branch_l = ALUout[0];
+                    end 
+        //TODO Clash with sub ALUctrl
+        /*3'b011:     begin
+                    ALUout = ALUop1 < ALUop2 ? 1 : 0;
+                    branch_l = ALUout[0];
+                    end 
+        */
+        // 
+        3'b100:     begin
+                    ALUout = ALUop1 ^ ALUop2; 
+                    branch_l = 0; 
+                    end
+        3'b101:     begin
+                    ALUout = ALUop1 >> ALUop2;
+                    branch_l = 0;
+                    end 
+        3'b011:     begin
+                    ALUout = ALUop1 << ALUop2;
+                    branch_l = 0;
+                    end
+        3'b110:     begin
+                    ALUout = ALUop1 | ALUop2;
+                    branch_l = 0;
+                    end
+        3'b111:     begin
+                    ALUout = ALUop1 & ALUop2;
+                    branch_l = 0;
+                    end
         default:    ALUout = {DATA_WIDTH{1'b0}};
     endcase
 end
-
 
 endmodule

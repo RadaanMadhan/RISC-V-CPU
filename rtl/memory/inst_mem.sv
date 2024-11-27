@@ -11,7 +11,7 @@ logic [DATA_WIDTH-1:0] rom_array [32'hBFC00FFF : 32'hBFC00000];
 initial 
 begin
     $display ("Loading instructions....");
-    $readmemh("../rtl/program.hex",rom_array);
+    $readmemh("program.hex",rom_array);
     $display ("Finished Loading instructions!");
 end
 

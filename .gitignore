@@ -1,0 +1,26 @@
+
+# Ignore all generated files
+*.out
+*.exe
+*.bin
+*.o
+*.obj
+*.log
+*.tmp
+*.cache
+
+# Ignore the obj_dir directory
+obj_dir/
+
+# Ignore all VCD (Value Change Dump) files
+*.vcd
+
+# Ignore temporary files created by editors or build tools
+*.swp
+*.swo
+*.bak
+*.tmp
+.DS_Store
+
+# Ignore hidden system files (optional)
+Thumbs.db

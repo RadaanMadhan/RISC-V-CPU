@@ -6,7 +6,8 @@ module main_decoder (
     output logic          ALUSrc,
     output logic          MemWrite,
     output logic          ResultSrc,
-    output logic          Branch
+    output logic          Branch,
+    output logic          PcOp
 );
 
 always_comb begin
@@ -20,6 +21,7 @@ case (op)
         ResultSrc   = 1'b1;
         Branch      = 1'b0;
         ALUOp       = 2'b00;
+        PcOp        = 1'b0;
     end
     //I-Type (Arithimetic)
     7'b0010011: begin
@@ -30,6 +32,7 @@ case (op)
         ResultSrc   = 1'b0;
         Branch      = 1'b0;
         ALUOp       = 2'b10;
+        PcOp        = 1'b0;
     end
     //S-type
     7'b0100011: begin
@@ -40,6 +43,7 @@ case (op)
         ResultSrc   = 1'b0;
         Branch      = 1'b0;
         ALUOp       = 2'b00;
+        PcOp        = 1'b0;
     end
     //R-type
     7'b0110011: begin
@@ -50,6 +54,7 @@ case (op)
         ResultSrc   = 1'b0;
         Branch      = 1'b0;
         ALUOp       = 2'b10;
+        PcOp        = 1'b0;
     end
     //B-type
     7'b1100011: begin
@@ -60,9 +65,10 @@ case (op)
         ResultSrc   = 1'b0;
         Branch      = 1'b1;
         ALUOp       = 2'b01;
+        PcOp        = 1'b0;
     end
     //U-Type
-    //Load Upper Imm TODO
+    //Load Upper Imm 
     7'b0110111: begin
         RegWrite    = 1'b1;
         ImmSrc      = 3'b100;
@@ -70,9 +76,11 @@ case (op)
         MemWrite    = 1'b0;
         ResultSrc   = 1'b0;
         Branch      = 1'b0;
-        ALUOp       = 2'b10;
+        //Check if its add or replace TODO
+        ALUOp       = 2'b00;
+        PcOp        = 1'b0;
     end
-    //Add Upper Imm to PC TODO 
+    //Add Upper Imm to PC TODO
     7'b0010111: begin
         RegWrite    = 1'b1;
         ImmSrc      = 3'b100;
@@ -80,7 +88,9 @@ case (op)
         MemWrite    = 1'b0;
         ResultSrc   = 1'b0;
         Branch      = 1'b0;
-        ALUOp       = 2'b10;
+        //Check if its add or replace TODO
+        ALUOp       = 2'b00;
+        PcOp        = 1'b1;
     end
     //J-Type TODO
         7'b1101111: begin
@@ -89,8 +99,9 @@ case (op)
         ALUSrc      = 1'b1;
         MemWrite    = 1'b0;
         ResultSrc   = 1'b0;
-        Branch      = 1'b0;
-        ALUOp       = 2'b10;
+        Branch      = 1'b1;
+        ALUOp       = 2'b00;
+        PcOp        = 1'b1;
     end
     //Jump and link reg (I-Type) TODO
         7'b1100111: begin
@@ -99,17 +110,19 @@ case (op)
         ALUSrc      = 1'b1;
         MemWrite    = 1'b0;
         ResultSrc   = 1'b0;
-        Branch      = 1'b0;
+        Branch      = 1'b1;
         ALUOp       = 2'b10;
+        PcOp        = 1'b1;
     end
     default: begin
         RegWrite    = 1'b0;
-        ImmSrc      = 2'b00;
+        ImmSrc      = 3'b000;
         ALUSrc      = 1'b0;
         MemWrite    = 1'b0;
         ResultSrc   = 1'b0;
         Branch      = 1'b0;
         ALUOp       = 2'b00;
+        PcOp        = 1'b0;
     end
 endcase
 end

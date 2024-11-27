@@ -8,6 +8,7 @@ module top_memory #(
     input  logic [DATA_WIDTH-1:0]  WriteData,
     input  logic                   ResultSrc,
     input  logic                   MemWrite,
+    input  logic [2:0]             funct3,
     output logic [DATA_WIDTH-1:0]  Result
 );
 
@@ -18,7 +19,8 @@ data_mem data_mem(
     .wr_en      (MemWrite),
     .addr       (ALUResult),
     .WriteData  (WriteData),
-    .ReadData   (ReadData)
+    .ReadData   (ReadData),
+    .funct3     (funct3)
 );
 
 
@@ -28,9 +30,5 @@ mux ResultSlc(
     .sel        (ResultSrc),
     .out        (Result)
 );
-
-
-
-
 
 endmodule

@@ -17,7 +17,7 @@ logic [DATA_WIDTH-1:0] registers [2**ADDRESS_WIDTH-1:0];
 
 always_ff @(posedge clk)
     begin
-        if (WE3) registers[AD3] <= WD3;
+        if (WE3 && (AD3 != 0)) registers[AD3] <= WD3;
     end
 
 always_comb begin

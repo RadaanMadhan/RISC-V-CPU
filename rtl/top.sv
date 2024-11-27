@@ -10,15 +10,19 @@ module top #(
 ) (
     input   logic clk,
     input   logic rst,
+    input   logic trigger,
     output  logic [DATA_WIDTH-1:0] a0    
 );
-    
+
+    //for testing
+    logic unused_trigger;
+    assign unused_trigger = trigger;
 
     logic [DATA_WIDTH-1:0]      pc;
     logic [DATA_WIDTH-1:0]      ImmExt;
     logic                       PCSrc;
     logic [DATA_WIDTH-1:0]      instr;
-    logic                       EQ;
+    logic                       branch_l;
     logic [2:0]                 ALUctrl;
     logic                       RegWrite;
     logic                       ALUSrc;
@@ -27,13 +31,18 @@ module top #(
     logic [DATA_WIDTH-1:0]      ALUResult;
     logic [DATA_WIDTH-1:0]      WriteData;
     logic [DATA_WIDTH-1:0]      Result;
+    logic                       PcOp;
+    logic                       jalr;
+    logic [DATA_WIDTH-1:0]      rs1;
 
     top_fetch fetch(
         .clk         (clk),
         .rst         (rst),
         .PCSrc       (PCSrc),
         .ImmExt      (ImmExt),
-        .pc          (pc)
+        .pc          (pc),
+        .jalr        (jalr),
+        .rs1         (rs1)
     );
 
     inst_mem inst_mem (
@@ -43,14 +52,16 @@ module top #(
 
     top_decode decode(
         .instr      (instr),
-        .EQ         (EQ),
+        .branch_l   (branch_l),
         .ALUctrl    (ALUctrl),
         .RegWrite   (RegWrite),
         .ALUSrc     (ALUSrc),
         .MemWrite   (MemWrite),
         .ResultSrc  (ResultSrc),
         .PCSrc      (PCSrc),
-        .ImmExt     (ImmExt)
+        .ImmExt     (ImmExt),
+        .PcOp       (PcOp),
+        .jalr       (jalr)
     );
 
     top_execute execute(
@@ -65,8 +76,11 @@ module top #(
         .ImmExt     (ImmExt),
         .a0         (a0),
         .ALUResult  (ALUResult),
-        .EQ         (EQ),
-        .WriteData  (WriteData)
+        .branch_l   (branch_l),
+        .WriteData  (WriteData),
+        .PcOp       (PcOp),
+        .pc         (pc),
+        .rs1        (rs1)
     );
 
     top_memory memory(
@@ -75,7 +89,8 @@ module top #(
         .WriteData  (WriteData),
         .ResultSrc  (ResultSrc),
         .MemWrite   (MemWrite),
-        .Result     (Result)
+        .Result     (Result),
+        .funct3     (instr[14:12])
     );
 
     //assign a0 = 32'd5;
