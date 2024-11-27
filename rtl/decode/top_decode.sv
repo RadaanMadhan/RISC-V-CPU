@@ -1,23 +1,30 @@
 `include <./decode/control_unit.sv>
 `include <./decode/sign_extend.sv>
+`include <./decode/reg_file.sv>
 
 module top_decode #(
     parameter DATA_WIDTH = 32
 ) (
+    input  logic                   clk,
     input  logic [DATA_WIDTH-1:0]  instr,
     input  logic                   branch_l,
+    input  logic [DATA_WIDTH-1:0]  Result,
     output logic [2:0]             ALUctrl,
-    output logic                   RegWrite,
     output logic                   ALUSrc,
     output logic                   MemWrite,
     output logic                   ResultSrc,
     output logic                   PCSrc,
     output logic [DATA_WIDTH-1:0]  ImmExt,
     output logic                   PcOp,
-    output logic                   jalr
+    output logic                   jalr,
+    output logic [DATA_WIDTH-1:0]  rd1,
+    output logic [DATA_WIDTH-1:0]  rd2,
+    output logic [DATA_WIDTH-1:0]  a0
+
 );
 
 logic [2:0] ImmSrc;
+logic       RegWrite;
 
 control_unit control_unit (
     .op         (instr[6:0]),
@@ -39,6 +46,18 @@ sign_extend sign_extend(
     .Imm        (instr[31:7]),
     .ImmSrc     (ImmSrc),
     .ImmExt     (ImmExt)     
+);
+
+reg_file reg_file (
+    .clk        (clk),
+    .AD1        (instr[19:15]),
+    .AD2        (instr[24:20]),
+    .AD3        (instr[11:7]),
+    .WD3        (Result),   
+    .WE3        (RegWrite),
+    .RD1        (rd1),
+    .RD2        (rd2),
+    .a0         (a0)
 );
 
     

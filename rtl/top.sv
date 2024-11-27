@@ -24,16 +24,15 @@ module top #(
     logic [DATA_WIDTH-1:0]      instr;
     logic                       branch_l;
     logic [2:0]                 ALUctrl;
-    logic                       RegWrite;
     logic                       ALUSrc;
     logic                       MemWrite;
     logic                       ResultSrc;
     logic [DATA_WIDTH-1:0]      ALUResult;
-    logic [DATA_WIDTH-1:0]      WriteData;
     logic [DATA_WIDTH-1:0]      Result;
     logic                       PcOp;
     logic                       jalr;
-    logic [DATA_WIDTH-1:0]      rs1;
+    logic [DATA_WIDTH-1:0]      rd1;
+    logic [DATA_WIDTH-1:0]      rd2;
 
     top_fetch fetch(
         .clk         (clk),
@@ -42,7 +41,7 @@ module top #(
         .ImmExt      (ImmExt),
         .pc          (pc),
         .jalr        (jalr),
-        .rs1         (rs1)
+        .rs1         (rd1)
     );
 
     inst_mem inst_mem (
@@ -51,42 +50,39 @@ module top #(
     );
 
     top_decode decode(
+        .clk        (clk),
         .instr      (instr),
         .branch_l   (branch_l),
         .ALUctrl    (ALUctrl),
-        .RegWrite   (RegWrite),
         .ALUSrc     (ALUSrc),
         .MemWrite   (MemWrite),
         .ResultSrc  (ResultSrc),
         .PCSrc      (PCSrc),
         .ImmExt     (ImmExt),
         .PcOp       (PcOp),
-        .jalr       (jalr)
+        .jalr       (jalr),
+        .Result     (Result),
+        .rd1        (rd1),
+        .rd2        (rd2),
+        .a0         (a0)
     );
 
     top_execute execute(
-        .clk        (clk),
-        .instr_11_7 (instr[11:7]),
-        .instr_19_15(instr[19:15]),
-        .instr_24_20(instr[24:20]),
         .ALUctrl    (ALUctrl),
         .ALUSrc     (ALUSrc),
-        .RegWrite   (RegWrite),
-        .Result     (Result),
         .ImmExt     (ImmExt),
-        .a0         (a0),
         .ALUResult  (ALUResult),
         .branch_l   (branch_l),
-        .WriteData  (WriteData),
         .PcOp       (PcOp),
         .pc         (pc),
-        .rs1        (rs1)
+        .rd1        (rd1),
+        .rd2        (rd2)
     );
 
     top_memory memory(
         .clk        (clk), 
         .ALUResult  (ALUResult),
-        .WriteData  (WriteData),
+        .WriteData  (rd2),
         .ResultSrc  (ResultSrc),
         .MemWrite   (MemWrite),
         .Result     (Result),
