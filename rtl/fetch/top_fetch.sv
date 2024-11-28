@@ -1,4 +1,5 @@
 `include <./fetch/pc_reg.sv>
+`include <./fetch/inst_mem.sv>
 
 module top_fetch #(
     parameter   ADDRESS_WIDTH = 32
@@ -9,6 +10,7 @@ module top_fetch #(
     input  logic [ADDRESS_WIDTH-1:0]   ImmExt,
     input  logic [ADDRESS_WIDTH-1:0]   rs1,
     input  logic                       jalr,
+    output logic [ADDRESS_WIDTH-1:0]   instr,
     output logic [ADDRESS_WIDTH-1:0]   pc
 );
 
@@ -37,6 +39,11 @@ mux jalr_sel(
     .sel    (jalr),
     .out    (pc_next_f)
 );
+
+    inst_mem inst_mem (
+        .addr       (pc),
+        .dout       (instr)
+    );
 
 
     

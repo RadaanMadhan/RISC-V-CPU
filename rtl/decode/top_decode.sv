@@ -20,8 +20,7 @@ module top_decode #(
     output logic [DATA_WIDTH-1:0]  rd1,
     output logic [DATA_WIDTH-1:0]  rd2,
     output logic [DATA_WIDTH-1:0]  a0
-
-);
+); 
 
 logic [2:0] ImmSrc;
 logic       RegWrite;

@@ -3,7 +3,6 @@
 `include <./decode/top_decode.sv>
 `include <./execute/top_execute.sv>
 `include <./memory/top_memory.sv>
-`include <./memory/inst_mem.sv>
 
 module top #(
     parameter   DATA_WIDTH = 32
@@ -34,6 +33,11 @@ module top #(
     logic [DATA_WIDTH-1:0]      rd1;
     logic [DATA_WIDTH-1:0]      rd2;
 
+
+//--------------------------------
+//------------FETCH---------------
+//--------------------------------
+
     top_fetch fetch(
         .clk         (clk),
         .rst         (rst),
@@ -41,13 +45,13 @@ module top #(
         .ImmExt      (ImmExt),
         .pc          (pc),
         .jalr        (jalr),
-        .rs1         (rd1)
+        .rs1         (rd1),
+        .instr       (instr)
     );
 
-    inst_mem inst_mem (
-        .addr       (pc),
-        .dout       (instr)
-    );
+//--------------------------------
+//------------DECODE--------------
+//--------------------------------
 
     top_decode decode(
         .clk        (clk),
@@ -67,6 +71,10 @@ module top #(
         .a0         (a0)
     );
 
+//--------------------------------
+//-----------EXECUTE--------------
+//--------------------------------
+
     top_execute execute(
         .ALUctrl    (ALUctrl),
         .ALUSrc     (ALUSrc),
@@ -79,6 +87,10 @@ module top #(
         .rd2        (rd2)
     );
 
+//--------------------------------
+//------------MEMORY--------------
+//--------------------------------
+
     top_memory memory(
         .clk        (clk), 
         .ALUResult  (ALUResult),
@@ -89,6 +101,5 @@ module top #(
         .funct3     (instr[14:12])
     );
 
-    //assign a0 = 32'd5;
 
 endmodule

@@ -12,7 +12,6 @@ module top_execute #(
     input  logic [DATA_WIDTH-1:0]  rd2,
     output logic [DATA_WIDTH-1:0]  ALUResult,
     output logic                   branch_l
-
 );
 
 logic [DATA_WIDTH-1:0]  ALUop2;
