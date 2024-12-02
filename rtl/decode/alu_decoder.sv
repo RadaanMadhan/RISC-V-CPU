@@ -27,11 +27,11 @@ always_comb begin
                                 else ALUctrl = 3'b000;   
                     // Set Less Than
                     3'b010:     ALUctrl = 3'b010;
-                    // Set Less Than (U) TODO
+                    // Set Less Than (U) 
                     3'b011:     ALUctrl = 3'b010;
                     //XOR
                     3'b100:     ALUctrl = 3'b100;
-                    // Shift Right TODO
+                    // Shift Right 
                     3'b101:     ALUctrl = 3'b101;
                     //Shift Left 
                     3'b001:     ALUctrl = 3'b011;

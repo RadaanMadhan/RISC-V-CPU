@@ -5,7 +5,6 @@ module control_unit (
     input logic [6:0]     op,
     input logic [2:0]     funct3,
     input logic           funct7_5,
-    input logic           branch_l, 
 
     output logic [2:0]    ALUctrl,
     output logic [2:0]    ImmSrc, 
@@ -13,12 +12,13 @@ module control_unit (
     output logic          ALUSrc,
     output logic          MemWrite,
     output logic [1:0]    ResultSrc,
-    output logic          PCSrc,
-    output logic          PcOp,
-    output logic          jalr
+    output logic          Jump,
+    output logic          Branch,
+    output logic          branch_neg,
+    output logic          PcOp
 );
 
-logic       branch;
+
 logic [1:0] ALUOp;
 
 main_decoder main_decode(
@@ -29,7 +29,7 @@ main_decoder main_decode(
     .ALUSrc         (ALUSrc),
     .MemWrite       (MemWrite),
     .ResultSrc      (ResultSrc),
-    .Branch         (branch),
+    .Branch         (Branch),
     .PcOp           (PcOp)
 );
 
@@ -45,10 +45,11 @@ alu_decoder alu_decode(
 always_comb begin
     case(funct3)
         //bne, bge, bgeu
-        3'b001, 3'b101, 3'b111: PCSrc = branch && !branch_l;
-        default: PCSrc = branch && (branch_l || PcOp);
+        3'b001, 3'b101, 3'b111: branch_neg = 1;
+        default: branch_neg = 0;
     endcase
-    jalr = (op == 7'b1100111)? 1 : 0;
+    //Jump if jal or jalr
+    Jump = (op == 7'b1101111 || op == 7'b1100111);
 end
 
 

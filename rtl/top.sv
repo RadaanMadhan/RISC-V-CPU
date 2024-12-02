@@ -21,7 +21,6 @@ module top #(
     logic [DATA_WIDTH-1:0]      ImmExt;
     logic                       PCSrc;
     logic [DATA_WIDTH-1:0]      instr;
-    logic                       branch_l;
     logic [2:0]                 ALUctrl;
     logic                       ALUSrc;
     logic                       MemWrite;
@@ -29,11 +28,13 @@ module top #(
     logic [DATA_WIDTH-1:0]      ALUResult;
     logic [DATA_WIDTH-1:0]      Result;
     logic                       PcOp;
-    logic                       jalr;
     logic [DATA_WIDTH-1:0]      rd1;
     logic [DATA_WIDTH-1:0]      rd2;
     logic [DATA_WIDTH-1:0]      PCPlus4;
     logic [DATA_WIDTH-1:0]      PCTarget;
+    logic                       Branch;
+    logic                       Jump;
+    logic                       branch_neg;
 
 
 //--------------------------------
@@ -44,10 +45,7 @@ module top #(
         .clk         (clk),
         .rst         (rst),
         .PCSrc       (PCSrc),
-        .ImmExt      (ImmExt),
         .pc          (pc),
-        .jalr        (jalr),
-        .rs1         (rd1),
         .instr       (instr),
         .PCPlus4     (PCPlus4),
         .PCTarget    (PCTarget)
@@ -60,15 +58,15 @@ module top #(
     top_decode decode(
         .clk        (clk),
         .instr      (instr),
-        .branch_l   (branch_l),
         .ALUctrl    (ALUctrl),
         .ALUSrc     (ALUSrc),
         .MemWrite   (MemWrite),
         .ResultSrc  (ResultSrc),
-        .PCSrc      (PCSrc),
+        .Branch     (Branch),
+        .Jump       (Jump),
+        .branch_neg (branch_neg),
         .ImmExt     (ImmExt),
         .PcOp       (PcOp),
-        .jalr       (jalr),
         .Result     (Result),
         .rd1        (rd1),
         .rd2        (rd2),
@@ -84,12 +82,15 @@ module top #(
         .ALUSrc     (ALUSrc),
         .ImmExt     (ImmExt),
         .ALUResult  (ALUResult),
-        .branch_l   (branch_l),
         .PcOp       (PcOp),
         .pc         (pc),
         .rd1        (rd1),
         .rd2        (rd2),
-        .PCTarget   (PCTarget)
+        .PCTarget   (PCTarget),
+        .Jump       (Jump),
+        .Branch     (Branch),
+        .branch_neg (branch_neg),
+        .PCSrc      (PCSrc)
     );
 
 //--------------------------------

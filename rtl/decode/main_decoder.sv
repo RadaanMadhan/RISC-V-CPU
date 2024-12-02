@@ -88,7 +88,7 @@ case (op)
         ResultSrc   = 2'b11;
         Branch      = 1'b0;
         ALUOp       = 2'b00;
-        PcOp        = 1'b1;
+        PcOp        = 1'b0;
     end
     //J-Type 
         7'b1101111: begin
@@ -99,7 +99,7 @@ case (op)
         ResultSrc   = 2'b10;
         Branch      = 1'b1;
         ALUOp       = 2'b00;
-        PcOp        = 1'b1;
+        PcOp        = 1'b0;
     end
     //Jump and link reg (I-Type) 
         7'b1100111: begin

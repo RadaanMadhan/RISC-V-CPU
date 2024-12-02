@@ -7,16 +7,16 @@ module top_decode #(
 ) (
     input  logic                   clk,
     input  logic [DATA_WIDTH-1:0]  instr,
-    input  logic                   branch_l,
     input  logic [DATA_WIDTH-1:0]  Result,
     output logic [2:0]             ALUctrl,
     output logic                   ALUSrc,
     output logic                   MemWrite,
     output logic [1:0]             ResultSrc,
-    output logic                   PCSrc,
+    output logic                   Branch,
+    output logic                   Jump,
+    output logic                   branch_neg,
     output logic [DATA_WIDTH-1:0]  ImmExt,
     output logic                   PcOp,
-    output logic                   jalr,
     output logic [DATA_WIDTH-1:0]  rd1,
     output logic [DATA_WIDTH-1:0]  rd2,
     output logic [DATA_WIDTH-1:0]  a0
@@ -29,16 +29,16 @@ control_unit control_unit (
     .op         (instr[6:0]),
     .funct3     (instr[14:12]),
     .funct7_5   (instr[30]),
-    .branch_l   (branch_l),  
     .ALUctrl    (ALUctrl),
     .ImmSrc     (ImmSrc), 
     .RegWrite   (RegWrite),
     .ALUSrc     (ALUSrc),
     .MemWrite   (MemWrite),
     .ResultSrc  (ResultSrc),
-    .PCSrc      (PCSrc),
     .PcOp       (PcOp),
-    .jalr       (jalr)
+    .Branch     (Branch),
+    .Jump       (Jump),
+    .branch_neg (branch_neg)
 );
 
 sign_extend sign_extend(
