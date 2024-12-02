@@ -10,13 +10,17 @@ module top_fetch #(
     input  logic [ADDRESS_WIDTH-1:0]   ImmExt,
     input  logic [ADDRESS_WIDTH-1:0]   rs1,
     input  logic                       jalr,
+    input  logic [ADDRESS_WIDTH-1:0]   PCTarget,
     output logic [ADDRESS_WIDTH-1:0]   instr,
-    output logic [ADDRESS_WIDTH-1:0]   pc
+    output logic [ADDRESS_WIDTH-1:0]   pc,
+    output logic [ADDRESS_WIDTH-1:0]   PCPlus4
 );
 
 logic [ADDRESS_WIDTH-1:0] pc_next;
 logic [ADDRESS_WIDTH-1:0] pc_next_f;
 
+
+assign PCPlus4 = pc + 4;
 
 pc_reg pc_reg(
     .clk    (clk),
@@ -27,8 +31,8 @@ pc_reg pc_reg(
 
 mux pc_sel
 (
-    .in0    (pc + 4),
-    .in1    (pc + ImmExt),
+    .in0    (PCPlus4),
+    .in1    (PCTarget),
     .sel    (PCSrc),
     .out    (pc_next)
 );

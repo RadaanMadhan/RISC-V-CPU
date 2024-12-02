@@ -46,33 +46,12 @@ always_ff @(posedge clk)
                 ram_array[addr]     <= WriteData [31:24];
             end
         endcase
-        case (funct3)
-            3'b000: begin
-                ram_array[addr]     <= WriteData [7:0];
-            end
-            3'b001: begin
-                ram_array[addr + 1] <= WriteData [7:0];
-                ram_array[addr]     <= WriteData [15:8];
-            end
-            3'b010: begin
-                ram_array[addr + 3] <= WriteData [7:0];
-                ram_array[addr + 2] <= WriteData [15:8];
-                ram_array[addr + 1] <= WriteData [23:16];
-                ram_array[addr]     <= WriteData [31:24];
-            end
-            default:begin
-                ram_array[addr + 3] <= WriteData [7:0];
-                ram_array[addr + 2] <= WriteData [15:8];
-                ram_array[addr + 1] <= WriteData [23:16];
-                ram_array[addr]     <= WriteData [31:24];
-            end
-        endcase
     end
     
 
 always_comb
 
-    case (funct3) //Check if right order TODO
+    case (funct3) 
         3'b000: ReadData = {{24{ram_array[addr][7]}}, ram_array[addr]};
         3'b001: ReadData = {{16{ram_array[addr+1][7]}}, ram_array[addr+ 1], ram_array[addr]};
         3'b010: ReadData = {ram_array[addr + 3], ram_array[addr + 2], ram_array[addr+ 1], ram_array[addr]};

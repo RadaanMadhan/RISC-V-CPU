@@ -12,7 +12,7 @@ module control_unit (
     output logic          RegWrite,
     output logic          ALUSrc,
     output logic          MemWrite,
-    output logic          ResultSrc,
+    output logic [1:0]    ResultSrc,
     output logic          PCSrc,
     output logic          PcOp,
     output logic          jalr

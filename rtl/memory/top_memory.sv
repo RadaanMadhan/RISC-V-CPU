@@ -6,9 +6,11 @@ module top_memory #(
     input  logic                   clk, 
     input  logic [DATA_WIDTH-1:0]  ALUResult,
     input  logic [DATA_WIDTH-1:0]  WriteData,
-    input  logic                   ResultSrc,
+    input  logic [1:0]             ResultSrc,
     input  logic                   MemWrite,
     input  logic [2:0]             funct3,
+    input  logic [DATA_WIDTH-1:0]  PCPlus4,
+    input  logic [DATA_WIDTH-1:0]  PCaui,
     output logic [DATA_WIDTH-1:0]  Result
 );
 
@@ -24,11 +26,13 @@ data_mem data_mem(
 );
 
 
-mux ResultSlc(
-    .in0        (ALUResult),
-    .in1        (ReadData),
-    .sel        (ResultSrc),
-    .out        (Result)
-);
+always_comb begin
+    case(ResultSrc)
+        2'b00: Result = ALUResult;
+        2'b01: Result = ReadData;
+        2'b10: Result = PCPlus4;
+        2'b11: Result = PCaui;
+    endcase
+end
 
 endmodule

@@ -11,20 +11,10 @@ module top_execute #(
     input  logic [DATA_WIDTH-1:0]  rd1,
     input  logic [DATA_WIDTH-1:0]  rd2,
     output logic [DATA_WIDTH-1:0]  ALUResult,
-    output logic                   branch_l
+    output logic                   branch_l,
+    output logic [DATA_WIDTH-1:0]  PCTarget
 );
-
-logic [DATA_WIDTH-1:0]  ALUop2;
-logic [DATA_WIDTH-1:0]  ALUop1;
-logic [DATA_WIDTH-1:0]  ALUop2_f;
-
-
-mux ALuSrc1Sel (
-    .in0        (rd1),
-    .in1        (pc), 
-    .sel        (PcOp),
-    .out        (ALUop1)
-);
+logic [DATA_WIDTH-1:0] ALUop2;
 
 mux ALuSrc2Sel (
     .in0        (rd2),
@@ -33,21 +23,17 @@ mux ALuSrc2Sel (
     .out        (ALUop2)
 );
 
-mux AluSrc2PcOpSel (
-    .in0        (ALUop2),
-    .in1        (32'd4),
-    .sel        (PcOp),
-    .out        (ALUop2_f)
-);
-
-
-
 alu alu(
-    .ALUop1     (ALUop1),
-    .ALUop2     (ALUop2_f),
+    .ALUop1     (rd1),
+    .ALUop2     (ALUop2),
     .ALUctrl    (ALUctrl),
     .ALUout     (ALUResult),
     .branch_l   (branch_l)
 );
+
+always_comb begin
+    PCTarget = PcOp ? rd1 + ImmExt : pc + ImmExt;
+end
+
 
 endmodule

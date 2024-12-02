@@ -12,7 +12,7 @@ module top_decode #(
     output logic [2:0]             ALUctrl,
     output logic                   ALUSrc,
     output logic                   MemWrite,
-    output logic                   ResultSrc,
+    output logic [1:0]             ResultSrc,
     output logic                   PCSrc,
     output logic [DATA_WIDTH-1:0]  ImmExt,
     output logic                   PcOp,

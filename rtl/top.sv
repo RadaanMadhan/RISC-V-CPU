@@ -25,13 +25,15 @@ module top #(
     logic [2:0]                 ALUctrl;
     logic                       ALUSrc;
     logic                       MemWrite;
-    logic                       ResultSrc;
+    logic [1:0]                 ResultSrc;
     logic [DATA_WIDTH-1:0]      ALUResult;
     logic [DATA_WIDTH-1:0]      Result;
     logic                       PcOp;
     logic                       jalr;
     logic [DATA_WIDTH-1:0]      rd1;
     logic [DATA_WIDTH-1:0]      rd2;
+    logic [DATA_WIDTH-1:0]      PCPlus4;
+    logic [DATA_WIDTH-1:0]      PCTarget;
 
 
 //--------------------------------
@@ -46,7 +48,9 @@ module top #(
         .pc          (pc),
         .jalr        (jalr),
         .rs1         (rd1),
-        .instr       (instr)
+        .instr       (instr),
+        .PCPlus4     (PCPlus4),
+        .PCTarget    (PCTarget)
     );
 
 //--------------------------------
@@ -84,7 +88,8 @@ module top #(
         .PcOp       (PcOp),
         .pc         (pc),
         .rd1        (rd1),
-        .rd2        (rd2)
+        .rd2        (rd2),
+        .PCTarget   (PCTarget)
     );
 
 //--------------------------------
@@ -98,7 +103,9 @@ module top #(
         .ResultSrc  (ResultSrc),
         .MemWrite   (MemWrite),
         .Result     (Result),
-        .funct3     (instr[14:12])
+        .funct3     (instr[14:12]),
+        .PCPlus4    (PCPlus4),
+        .PCaui      (PCTarget)
     );
 
 
