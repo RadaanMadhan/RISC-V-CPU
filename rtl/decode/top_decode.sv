@@ -8,6 +8,8 @@ module top_decode #(
     input  logic                   clk,
     input  logic [DATA_WIDTH-1:0]  instr,
     input  logic [DATA_WIDTH-1:0]  Result,
+    input  logic [11:7]            Rd,
+    input  logic                   RegWrite,
     output logic [2:0]             ALUctrl,
     output logic                   ALUSrc,
     output logic                   MemWrite,
@@ -19,11 +21,11 @@ module top_decode #(
     output logic                   PcOp,
     output logic [DATA_WIDTH-1:0]  rd1,
     output logic [DATA_WIDTH-1:0]  rd2,
+    output logic                   RegWriteD,
     output logic [DATA_WIDTH-1:0]  a0
 ); 
 
 logic [2:0] ImmSrc;
-logic       RegWrite;
 
 control_unit control_unit (
     .op         (instr[6:0]),
@@ -31,7 +33,7 @@ control_unit control_unit (
     .funct7_5   (instr[30]),
     .ALUctrl    (ALUctrl),
     .ImmSrc     (ImmSrc), 
-    .RegWrite   (RegWrite),
+    .RegWrite   (RegWriteD),
     .ALUSrc     (ALUSrc),
     .MemWrite   (MemWrite),
     .ResultSrc  (ResultSrc),
@@ -51,7 +53,7 @@ reg_file reg_file (
     .clk        (clk),
     .AD1        (instr[19:15]),
     .AD2        (instr[24:20]),
-    .AD3        (instr[11:7]),
+    .AD3        (Rd),
     .WD3        (Result),   
     .WE3        (RegWrite),
     .RD1        (rd1),

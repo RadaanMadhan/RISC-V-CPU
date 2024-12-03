@@ -3,6 +3,10 @@
 `include <./decode/top_decode.sv>
 `include <./execute/top_execute.sv>
 `include <./memory/top_memory.sv>
+`include <./pipeline/fetch_reg.sv>
+`include <./pipeline/decode_reg.sv>
+`include <./pipeline/execute_reg.sv>
+`include <./pipeline/memory_reg.sv>
 
 module top #(
     parameter   DATA_WIDTH = 32
@@ -35,6 +39,9 @@ module top #(
     logic                       Branch;
     logic                       Jump;
     logic                       branch_neg;
+    logic                       RegWriteD;
+    logic [DATA_WIDTH-1:0]      ReadData;
+
 
 
 //--------------------------------
@@ -52,12 +59,32 @@ module top #(
     );
 
 //--------------------------------
+//-------Pipeline Fetch-----------
+//--------------------------------
+
+    logic [DATA_WIDTH-1:0]      instrD;
+    logic [DATA_WIDTH-1:0]      pcD;
+    logic [DATA_WIDTH-1:0]      PCPlus4D;
+
+    fetch_reg pipeline_fetch(
+        .clk        (clk),
+        .instrF     (instr),
+        .pcF        (pc),
+        .PCPlus4F   (PCPlus4),
+
+        .instrD     (instrD),
+        .pcD        (pcD),
+        .PCPlus4D   (PCPlus4D)
+    );
+
+
+//--------------------------------
 //------------DECODE--------------
 //--------------------------------
 
     top_decode decode(
         .clk        (clk),
-        .instr      (instr),
+        .instr      (instrD),
         .ALUctrl    (ALUctrl),
         .ALUSrc     (ALUSrc),
         .MemWrite   (MemWrite),
@@ -70,7 +97,69 @@ module top #(
         .Result     (Result),
         .rd1        (rd1),
         .rd2        (rd2),
+        .RegWrite   (RegWriteW),
+        .RegWriteD  (RegWriteD),
+        .Rd         (RdW),
         .a0         (a0)
+    );
+
+//--------------------------------
+//-------Pipeline Decode----------
+//--------------------------------
+
+    logic [2:0]             ALUctrlE;
+    logic                   ALUSrcE;
+    logic                   MemWriteE;
+    logic [1:0]             ResultSrcE;
+    logic                   BranchE;
+    logic                   JumpE;
+    logic                   branch_negE;
+    logic [DATA_WIDTH-1:0]  ImmExtE;
+    logic                   PcOpE;
+    logic [DATA_WIDTH-1:0]  rd1E;
+    logic [DATA_WIDTH-1:0]  rd2E;
+    logic [DATA_WIDTH-1:0]  pcE;
+    logic [14:12]           instr_14_12E;
+    logic [DATA_WIDTH-1:0]  PCPlus4E;
+    logic                   RegWriteE;
+    logic [11:7]            RdE;
+
+
+    decode_reg pipeline_decode(
+        .clk         (clk),
+        .ALUctrlD    (ALUctrl),
+        .ALUSrcD     (ALUSrc),
+        .MemWriteD   (MemWrite),
+        .ResultSrcD  (ResultSrc),
+        .BranchD     (Branch),
+        .JumpD       (Jump),
+        .branch_negD (branch_neg),
+        .ImmExtD     (ImmExt),
+        .PcOpD       (PcOp),
+        .rd1D        (rd1),
+        .rd2D        (rd2),
+        .pcD         (pcD),
+        .instr_14_12D(instrD[14:12]),
+        .PCPlus4D    (PCPlus4D),
+        .RegWriteD   (RegWriteD),
+        .RdD         (instrD[11:7]),
+
+        .ALUctrlE    (ALUctrlE),
+        .ALUSrcE     (ALUSrcE),
+        .MemWriteE   (MemWriteE),
+        .ResultSrcE  (ResultSrcE),
+        .BranchE     (BranchE),
+        .JumpE       (JumpE),
+        .branch_negE (branch_negE),
+        .ImmExtE     (ImmExtE),
+        .PcOpE       (PcOpE),
+        .rd1E        (rd1E),
+        .rd2E        (rd2E),
+        .pcE         (pcE),
+        .instr_14_12E(instr_14_12E),
+        .PCPlus4E    (PCPlus4E),
+        .RegWriteE   (RegWriteE),
+        .RdE         (RdE)
     );
 
 //--------------------------------
@@ -78,20 +167,55 @@ module top #(
 //--------------------------------
 
     top_execute execute(
-        .ALUctrl    (ALUctrl),
-        .ALUSrc     (ALUSrc),
-        .ImmExt     (ImmExt),
+        .ALUctrl    (ALUctrlE),
+        .ALUSrc     (ALUSrcE),
+        .ImmExt     (ImmExtE),
         .ALUResult  (ALUResult),
-        .PcOp       (PcOp),
-        .pc         (pc),
-        .rd1        (rd1),
-        .rd2        (rd2),
+        .PcOp       (PcOpE),
+        .pc         (pcE),
+        .rd1        (rd1E),
+        .rd2        (rd2E),
         .PCTarget   (PCTarget),
-        .Jump       (Jump),
-        .Branch     (Branch),
-        .branch_neg (branch_neg),
+        .Jump       (JumpE),
+        .Branch     (BranchE),
+        .branch_neg (branch_negE),
         .PCSrc      (PCSrc)
     );
+
+//--------------------------------
+//-------Pipeline Execute---------
+//--------------------------------
+
+    logic [DATA_WIDTH-1:0]   WriteDataM;
+    logic [DATA_WIDTH-1:0]   ALUResultM;
+    logic [11:7]             RdM;
+    logic                    RegWriteM;
+    logic [DATA_WIDTH-1:0]   PCPlus4M;
+    logic                    MemWriteM;
+    logic [1:0]              ResultSrcM;
+    logic [14:12]            funct3M;
+
+    execute_reg pipeline_execute(
+        .clk         (clk),
+        .MemWriteE   (MemWriteE),
+        .ResultSrcE  (ResultSrcE),
+        .PCPlus4E    (PCPlus4E),
+        .RegWriteE   (RegWriteE),
+        .RdE         (RdE),
+        .ALUResultE  (ALUResult),
+        .WriteDataE  (rd2E),
+        .funct3E     (instr_14_12E),
+
+        .MemWriteM   (MemWriteM),
+        .ResultSrcM  (ResultSrcM),
+        .PCPlus4M    (PCPlus4M),
+        .RegWriteM   (RegWriteM),
+        .RdM         (RdM),
+        .ALUResultM  (ALUResultM),
+        .WriteDataM  (WriteDataM),
+        .funct3M     (funct3M)
+    );
+
 
 //--------------------------------
 //------------MEMORY--------------
@@ -99,15 +223,57 @@ module top #(
 
     top_memory memory(
         .clk        (clk), 
-        .ALUResult  (ALUResult),
-        .WriteData  (rd2),
-        .ResultSrc  (ResultSrc),
-        .MemWrite   (MemWrite),
-        .Result     (Result),
-        .funct3     (instr[14:12]),
-        .PCPlus4    (PCPlus4),
-        .PCaui      (PCTarget)
+        .ALUResult  (ALUResultM),
+        .WriteData  (WriteDataM),
+        .MemWrite   (MemWriteM),
+        .ReadData   (ReadData),
+        .funct3     (funct3M)
     );
+
+//--------------------------------
+//-------Pipeline Memory---------
+//--------------------------------
+
+    logic [DATA_WIDTH-1:0]   ALUResultW;
+    logic [DATA_WIDTH-1:0]   PCPlus4W;
+    logic [11:7]             RdW;
+    logic                    RegWriteW;
+    logic [1:0]              ResultSrcW;
+    logic [DATA_WIDTH-1:0]   ReadDataW;
+
+    memory_reg pipeline_memory (
+        .clk        (clk),
+        .ALUResultM (ALUResultM),
+        .PCPlus4M   (PCPlus4M),
+        .RdM        (RdM),
+        .RegWriteM  (RegWriteM),
+        .ResultSrcM (ResultSrcM),
+        .ReadDataM  (ReadData),
+
+        .ALUResultW (ALUResultW),
+        .PCPlus4W   (PCPlus4W),
+        .RdW        (RdW),
+        .RegWriteW  (RegWriteW),
+        .ResultSrcW (ResultSrcW),
+        .ReadDataW  (ReadDataW)
+    );
+
+
+//--------------------------------
+//-----------Write Back-----------
+//--------------------------------
+
+always_comb begin
+    case (ResultSrcW) 
+        2'b00: Result = ALUResultW;
+        2'b01: Result = ReadDataW;
+        2'b10: Result = PCPlus4W;
+        //TODO
+        2'b11: Result = PCTarget;
+    endcase
+end
+    
+
 
 
 endmodule
