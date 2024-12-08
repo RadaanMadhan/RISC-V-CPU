@@ -15,7 +15,7 @@ module reg_file #(
 
 logic [DATA_WIDTH-1:0] registers [2**ADDRESS_WIDTH-1:0];
 
-always_ff @(posedge clk)
+always_ff @(negedge clk)
     begin
         if (WE3 && (AD3 != 0)) registers[AD3] <= WD3;
     end

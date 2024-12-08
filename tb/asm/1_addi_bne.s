@@ -10,18 +10,12 @@ mloop:
 iloop:
     addi    a0, a1, 0           # output = i
     addi    a1, a1, 1           # i++
-    nop
     bne     a1, t1, iloop       # if i != 255, goto iloop
-    nop
-    nop
     bne     a0, zero, finish    # enter finish state
-    nop
-    nop
     
 
 finish:      # expected result is 254
-    nop
     bne     a0, zero, finish     # loop forever
-    nop
+    
     
     

@@ -10,7 +10,6 @@ module execute_reg #(
     input  logic                    MemWriteE,
     input  logic [1:0]              ResultSrcE,
     input  logic [14:12]            funct3E,
-
     output logic [DATA_WIDTH-1:0]   WriteDataM,    
     output logic [DATA_WIDTH-1:0]   ALUResultM,
     output logic [11:7]             RdM,
@@ -21,13 +20,13 @@ module execute_reg #(
     output logic [14:12]            funct3M
 );
     always_ff @(posedge clk) begin
-        ALUResultM <= ALUResultE;
-        WriteDataM <= WriteDataE;
-        RdM <= RdE;
-        RegWriteM <= RegWriteE;
-        PCPlus4M <= PCPlus4E;
-        MemWriteM <= MemWriteE;
-        ResultSrcM <= ResultSrcE;
-        funct3M <= funct3E;
+            ALUResultM <= ALUResultE;
+            WriteDataM <= WriteDataE;
+            RdM <= RdE;
+            RegWriteM <= RegWriteE;
+            PCPlus4M <= PCPlus4E;
+            MemWriteM <= MemWriteE;
+            ResultSrcM <= ResultSrcE;
+            funct3M <= funct3E;   
     end
 endmodule

@@ -7,6 +7,7 @@
 `include <./pipeline/decode_reg.sv>
 `include <./pipeline/execute_reg.sv>
 `include <./pipeline/memory_reg.sv>
+`include <./pipeline/hazard_unit.sv>
 
 module top #(
     parameter   DATA_WIDTH = 32
@@ -55,7 +56,10 @@ module top #(
         .pc          (pc),
         .instr       (instr),
         .PCPlus4     (PCPlus4),
-        .PCTarget    (PCTarget)
+        .PCTarget    (PCTarget),
+
+        //Stall
+        .StallF      (StallF)
     );
 
 //--------------------------------
@@ -71,6 +75,9 @@ module top #(
         .instrF     (instr),
         .pcF        (pc),
         .PCPlus4F   (PCPlus4),
+
+        .FlushF      (FlushF),
+        .StallF      (StallF),
 
         .instrD     (instrD),
         .pcD        (pcD),
@@ -123,6 +130,8 @@ module top #(
     logic [DATA_WIDTH-1:0]  PCPlus4E;
     logic                   RegWriteE;
     logic [11:7]            RdE;
+    logic [19:15]           rs1E;
+    logic [24:20]           rs2E;    
 
 
     decode_reg pipeline_decode(
@@ -143,6 +152,11 @@ module top #(
         .PCPlus4D    (PCPlus4D),
         .RegWriteD   (RegWriteD),
         .RdD         (instrD[11:7]),
+        .rs1D        (instrD[19:15]),
+        .rs2D        (instrD[24:20]),
+
+        .FlushD      (FlushD),
+        .StallD      (StallD),
 
         .ALUctrlE    (ALUctrlE),
         .ALUSrcE     (ALUSrcE),
@@ -159,12 +173,16 @@ module top #(
         .instr_14_12E(instr_14_12E),
         .PCPlus4E    (PCPlus4E),
         .RegWriteE   (RegWriteE),
-        .RdE         (RdE)
+        .RdE         (RdE),
+        .rs1E        (rs1E),
+        .rs2E        (rs2E)
     );
 
 //--------------------------------
 //-----------EXECUTE--------------
 //--------------------------------
+
+    logic [DATA_WIDTH-1:0]  rd2_h;
 
     top_execute execute(
         .ALUctrl    (ALUctrlE),
@@ -179,7 +197,12 @@ module top #(
         .Jump       (JumpE),
         .Branch     (BranchE),
         .branch_neg (branch_negE),
-        .PCSrc      (PCSrc)
+        .PCSrc      (PCSrc),
+        .ForwardAE  (ForwardAE),
+        .ForwardBE  (ForwardBE),
+        .ResultW    (Result),
+        .ALUResultM (ALUResultM),
+        .rd2_h      (rd2_h)
     );
 
 //--------------------------------
@@ -203,9 +226,8 @@ module top #(
         .RegWriteE   (RegWriteE),
         .RdE         (RdE),
         .ALUResultE  (ALUResult),
-        .WriteDataE  (rd2E),
+        .WriteDataE  (rd2_h),
         .funct3E     (instr_14_12E),
-
         .MemWriteM   (MemWriteM),
         .ResultSrcM  (ResultSrcM),
         .PCPlus4M    (PCPlus4M),
@@ -273,7 +295,36 @@ always_comb begin
     endcase
 end
     
+//--------------------------------
+//----------HAZARD UNIT-----------
+//--------------------------------
 
+    logic[1:0] ForwardAE;
+    logic[1:0] ForwardBE;
+    logic      FlushD;
+    logic      FlushF;
+    logic      StallF;
+    logic      StallD;
+
+    hazard_unit pipeline_hazard (
+        .Rs1E           (rs1E),
+        .Rs2E           (rs2E),
+        .RdM            (RdM),
+        .RdW            (RdW),
+        .RegWriteM      (RegWriteM),
+        .RegWriteW      (RegWriteW),
+        .ForwardAE      (ForwardAE),
+        .ForwardBE      (ForwardBE),
+        .Rs1D           (instrD[19:15]),
+        .Rs2D           (instrD[24:20]),
+        .RdE            (RdE),
+        .ResultSrcE     (ResultSrcE),
+        .StallF         (StallF),
+        .StallD         (StallD),
+        .FlushF         (FlushF),
+        .PCSrcE         (PCSrc),
+        .FlushD         (FlushD)
+    );
 
 
 endmodule

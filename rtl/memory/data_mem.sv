@@ -23,7 +23,7 @@ end;
 
 
 
-always_ff @(posedge clk)
+always_ff @(negedge clk)
     if (wr_en) begin 
         case (funct3)
             3'b000: begin
