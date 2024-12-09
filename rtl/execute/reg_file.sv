@@ -8,6 +8,8 @@ module reg_file #(
     input  logic [ADDRESS_WIDTH-1:0]       AD3,
     input  logic [DATA_WIDTH-1:0]          WD3,
     input  logic                           WE3,
+    input logic                            Trigger,
+
     output logic [DATA_WIDTH-1:0]          RD1,
     output logic [DATA_WIDTH-1:0]          RD2,
     output logic [DATA_WIDTH-1:0]          a0
@@ -18,6 +20,7 @@ logic [DATA_WIDTH-1:0] registers [2**ADDRESS_WIDTH-1:0];
 always_ff @(posedge clk)
     begin
         if (WE3 && (AD3 != 0)) registers[AD3] <= WD3;
+        registers[5] <= {31'b0, Trigger};
     end
 
 always_comb begin

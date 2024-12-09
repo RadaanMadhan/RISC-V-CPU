@@ -15,6 +15,8 @@ module top_execute #(
     input  logic                   RegWrite,
     input  logic [DATA_WIDTH-1:0]  Result,
     input  logic [DATA_WIDTH-1:0]  ImmExt,
+    input logic                    Trigger,
+
     output logic [DATA_WIDTH-1:0]  a0,
     output logic [DATA_WIDTH-1:0]  ALUResult,
     output logic                   branch_l,
@@ -36,7 +38,8 @@ reg_file reg_file (
     .WE3        (RegWrite),
     .RD1        (rs1),
     .RD2        (WriteData),
-    .a0         (a0)
+    .a0         (a0),
+    .Trigger    (Trigger)
 );
 
 mux ALuSrc1Sel (

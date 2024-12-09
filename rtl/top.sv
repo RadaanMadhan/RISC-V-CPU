@@ -14,9 +14,7 @@ module top #(
     output  logic [DATA_WIDTH-1:0] a0    
 );
 
-    //for testing
-    logic unused_trigger;
-    assign unused_trigger = trigger;
+
 
     logic [DATA_WIDTH-1:0]      pc;
     logic [DATA_WIDTH-1:0]      ImmExt;
@@ -66,6 +64,7 @@ module top #(
 
     top_execute execute(
         .clk        (clk),
+        .Trigger    (trigger),
         .instr_11_7 (instr[11:7]),
         .instr_19_15(instr[19:15]),
         .instr_24_20(instr[24:20]),
