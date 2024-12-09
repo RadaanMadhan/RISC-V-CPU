@@ -11,13 +11,13 @@ module data_mem #(
 );
 
 
-logic [7:0] ram_array [32'h0001FFFF:0];
+logic [7:0] ram_array [2**17-1 : 0];
 
 
 
 initial begin
         $display("Loading data memory");
-        $readmemh("data.hex", ram_array, 32'h10000);  // Load into data mem
+        $readmemh("noisy.mem", ram_array, 32'h10000);  // Load into data mem
         $display("Finished Loading data memory");
 end;
 
