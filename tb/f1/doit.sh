@@ -10,7 +10,6 @@ cd ${F1_DIR}
 rm -rf obj_dir
 rm -f f1.vcd
 
-../assemble.sh f1.s
 
 # run Verilator to translate Verilog into C++, including C++ testbench
 verilator -Wall --trace \
