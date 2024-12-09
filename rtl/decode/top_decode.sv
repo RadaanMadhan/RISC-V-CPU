@@ -6,6 +6,7 @@ module top_decode #(
     parameter DATA_WIDTH = 32
 ) (
     input  logic                   clk,
+    input  logic                   trigger,
     input  logic [DATA_WIDTH-1:0]  instr,
     input  logic [DATA_WIDTH-1:0]  Result,
     input  logic [11:7]            Rd,
@@ -51,6 +52,7 @@ sign_extend sign_extend(
 
 reg_file reg_file (
     .clk        (clk),
+    .trigger    (trigger),
     .AD1        (instr[19:15]),
     .AD2        (instr[24:20]),
     .AD3        (Rd),
