@@ -22,7 +22,7 @@ int main(int argc, char **argv, char **env) {
 
     // Initialize Vbuddy
     if (vbdOpen() != 1) return -1;
-    vbdHeader("CPU:F1");
+    vbdHeader("Pipelined_F1");
 
     // Initialize simulation inputs
     top->clk = 1;
